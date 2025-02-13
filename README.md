@@ -14,8 +14,8 @@ A new Flutter project.
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/iafcy/<repo>.git
-    cd <repo>
+    https://github.com/iafcy/igem25-monitor-app
+    cd igem25-monitor-app
     ```
 2. Install dependencies
     ```bash
