@@ -15,18 +15,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _isConnecting = false;
   bool _isConnected = false;
-  List<CellData>? _cellData;
-  final GridService _gridService = GridService();
+  SensorData? _data;
+  final DataService _gridService = DataService();
 
   Future<void> _connect() async {
     setState(() {_isConnecting = true;});
     
-    List<CellData> fetchedData = await _gridService.fetchGridData();
+    SensorData fetchedData = await _gridService.fetchData();
 
     setState(() {
       _isConnecting = false;
       _isConnected = true;
-      _cellData = fetchedData;
+      _data = fetchedData;
     });
   }
 
@@ -43,9 +43,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool cardsReady = _isConnected && _cellData != null;
-    int n_detected = _cellData?.where((cell) => cell.vocDetected).length ?? 9;
-    int n_lowGM = _cellData?.where((cell) => cell.remainingGM < 0.25).length ?? 0;
+    final bool cardsReady = _isConnected && _data != null;
+    int nDetected = _data?.grid.where((cell) => cell.vocDetected).length ?? 9;
     
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -68,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                     return GridCellCard(
                       index: index,
                       isReady: cardsReady,
-                      cellData: cardsReady ? _cellData![index] : null,
+                      cellData: cardsReady ? _data!.grid[index] : null,
                       onPressed: cardsReady
                           ? () {
                               Navigator.push(
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                                 MaterialPageRoute(
                                   builder: (context) => DetailPage(
                                     index: index,
-                                    cellData: _cellData![index],
+                                    cellData: _data!.grid[index],
                                   ),
                                 ),
                               );
@@ -123,14 +122,6 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Overview",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -142,33 +133,48 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          '$n_detected cells',
+                          '$nDetected cells',
                           style: TextStyle(
                             fontSize: 20,
-                            color: n_detected > 0 ? Colors.red[800] : Colors.green[800],
+                            color: nDetected > 0 ? Colors.red[800] : Colors.green[800],
                           ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "≤ 25% of GM Bacteria",
+                          "Remaining GM Bacteria",
                           style: const TextStyle(
                             fontSize: 20,
-                            color: Colors.black,
                           ),
                         ),
                         Text(
-                          "$n_lowGM cells",
-                          style: TextStyle(
+                          "${(_data!.remainingGM * 100).toStringAsFixed(1)}%",
+                          style: const TextStyle(
                             fontSize: 20,
-                            color: n_lowGM > 0 ? Colors.red[800] : Colors.green[800],
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    TweenAnimationBuilder<double>(
+                      duration: const Duration(milliseconds: 750),
+                      curve: Curves.easeInOut,
+                      tween: Tween<double>(
+                          begin: 0,
+                          end: _data!.remainingGM,
+                      ),
+                      builder: (context, value, _) =>
+                          LinearProgressIndicator(
+                            value: value,
+                            minHeight: 12,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            backgroundColor: Colors.grey[300],
+                          ),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),

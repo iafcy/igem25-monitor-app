@@ -48,13 +48,6 @@ class GridCellCard extends StatelessWidget {
               BlendMode.srcIn
             ),
           ),
-          LinearProgressIndicator(
-            value: cellData!.remainingGM,
-            minHeight: 6,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
-            backgroundColor: !cellData!.vocDetected ? Colors.green[200]! : Colors.red[200]!, 
-            color: !cellData!.vocDetected ? Colors.green[800]! : Colors.red[800]!, 
-          ),
         ],
       ),
     );
