@@ -23,7 +23,7 @@ class GridCellCard extends StatelessWidget {
       cardColor = Colors.grey[400]!;
     } else {
       bool vocDetected = cellData!.vocDetected;
-      cardColor = !vocDetected ? Colors.green[400]! : Colors.red[400]!;
+      cardColor = !vocDetected ? Color(0xff51ad95) : Colors.red[400]!;
     }
 
     return FilledButton(
@@ -44,7 +44,7 @@ class GridCellCard extends StatelessWidget {
             height: 32,
             !cellData!.vocDetected ? 'assets/icons/shield-check.svg' : 'assets/icons/shield-x.svg',
             colorFilter: ColorFilter.mode(
-              !cellData!.vocDetected ? Colors.green[900]! : Colors.red[900]!, 
+              !cellData!.vocDetected ? Color(0xff226554) : Colors.red[900]!, 
               BlendMode.srcIn
             ),
           ),

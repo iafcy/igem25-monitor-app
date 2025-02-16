@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                   child: ElevatedButton(
                     onPressed: _isConnecting ? null : _connect,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Color(0xff226554),
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     ),
                     child: Text(
@@ -171,7 +171,8 @@ class _HomePageState extends State<HomePage> {
                             value: value,
                             minHeight: 12,
                             borderRadius: BorderRadius.all(Radius.circular(8)),
-                            backgroundColor: Colors.grey[300],
+                            color: Color(0xff226554),
+                            backgroundColor: Color(0xbf51ad95),
                           ),
                     ),
                     const SizedBox(height: 24),
@@ -183,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: _isConnecting ? null : _disconnect,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Color(0xff51ad95),
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
                   child: const Text(

@@ -27,6 +27,8 @@ class SettingsPage extends StatelessWidget {
                     onChanged: (value) {
                       settings.setTemperatureUnit(value);
                     },
+                    activeColor: Color(0xff226554),
+                    activeTrackColor: Color(0xbf51ad95),
                   ),
                 ),
               ],
